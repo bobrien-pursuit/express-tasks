@@ -1,9 +1,9 @@
 const db = require('../db/dbConfig')
 
 
-const getTasks = async () => {
+const getTasks = async (userId) => {
     try {
-        const tasks = await db.any("SELECT * FROM tasks")
+        const tasks = await db.any("SELECT * FROM tasks WHERE user_id=$1", userId)
         return tasks
     } catch (error) {
         return error

@@ -1,5 +1,5 @@
 const express = require('express')
-const tasks = express.Router()
+const tasks = express.Router({mergeParams: true});
 const { getTasks, getTask, createTask, updateTask, deleteTask } = require('../queries/tasks')
 const { checkTitle } = require('../validations/tasks')
 
@@ -7,7 +7,8 @@ const { checkTitle } = require('../validations/tasks')
 // localhost:4001/tasks/
 tasks.get('/', async (req, res) => {
     try {
-        const tasks = await getTasks()
+        const { user_id } = req.params;
+        const tasks = await getTasks(user_id)
         res.status(200).json(tasks)
     } catch (err) {
         res.status(404).json({ error: err })
