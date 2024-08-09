@@ -1,11 +1,12 @@
 const express = require('express')
 const tasks = express.Router({mergeParams: true});
-const { getTasks, getTask, createTask, updateTask, deleteTask } = require('../queries/tasks')
-const { checkTitle } = require('../validations/tasks')
+const { getTasks, getTask, createTask, updateTask, deleteTask } = require('../queries/tasks');
+const { checkTitle } = require('../validations/tasks');
+const { authenticateToken } = require(`../auth/auth.js`);
 
 // GET ALL tasks
 // localhost:4001/tasks/
-tasks.get('/', async (req, res) => {
+tasks.get('/', authenticateToken, async (req, res) => {
     try {
         const { user_id } = req.params;
         const tasks = await getTasks(user_id)
@@ -17,10 +18,10 @@ tasks.get('/', async (req, res) => {
 
 // GET ONE task
 // localhost:4001/tasks/3
-tasks.get('/:id', async (req, res) => {
+tasks.get('/:id', authenticateToken, async (req, res) => {
+    const { id, user_id } = req.params;
     try {
-        const { id } = req.params
-        const task = await getTask(id)
+        const task = await getTask(id, user_id)
         if(task.task_id){
             res.status(200).json(task)
         } else {
@@ -34,7 +35,7 @@ tasks.get('/:id', async (req, res) => {
 
 // CREATE a task
 // localhost:4001/tasks/
-tasks.post('/', checkTitle, async (req, res) => {
+tasks.post('/', authenticateToken, checkTitle, async (req, res) => {
     try {
         const newTask = await createTask(req.body)
         res.status(201).json(newTask)   
@@ -46,7 +47,7 @@ tasks.post('/', checkTitle, async (req, res) => {
 
 // UPDATE a task
 // localhost:4001/tasks/3
-tasks.put("/:id", async (req, res) => {
+tasks.put("/:id", authenticateToken, async (req, res) => {
     try {
         const { id } = req.params
         const updatedTask = await updateTask(id, req.body)
@@ -59,7 +60,7 @@ tasks.put("/:id", async (req, res) => {
 
 // Delete a task
 // localhost:4001/tasks/3
-tasks.delete('/:id', async (req, res) => {
+tasks.delete('/:id', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params
         const deletedTask = await deleteTask(id)
