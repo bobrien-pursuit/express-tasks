@@ -2,11 +2,11 @@ const express = require('express')
 const tasks = express.Router({mergeParams: true});
 const { getTasks, getTask, createTask, updateTask, deleteTask } = require('../queries/tasks');
 const { checkTitle } = require('../validations/tasks');
-const { authenticateToken } = require(`../auth/auth.js`);
+// const { authenticateToken } = require(`../auth/auth.js`);
 
 // GET ALL tasks
 // localhost:4001/tasks/
-tasks.get('/', authenticateToken, async (req, res) => {
+tasks.get('/', async (req, res) => {
     try {
         const { user_id } = req.params;
         const tasks = await getTasks(user_id)
@@ -18,7 +18,7 @@ tasks.get('/', authenticateToken, async (req, res) => {
 
 // GET ONE task
 // localhost:4001/tasks/3
-tasks.get('/:id', authenticateToken, async (req, res) => {
+tasks.get('/:id', async (req, res) => {
     const { id, user_id } = req.params;
     try {
         const task = await getTask(id, user_id)
@@ -35,7 +35,7 @@ tasks.get('/:id', authenticateToken, async (req, res) => {
 
 // CREATE a task
 // localhost:4001/tasks/
-tasks.post('/', authenticateToken, checkTitle, async (req, res) => {
+tasks.post('/', checkTitle, async (req, res) => {
     try {
         const { user_id } = req.params;
         const newTask = await createTask({...req.body, user_id:user_id })
@@ -48,7 +48,7 @@ tasks.post('/', authenticateToken, checkTitle, async (req, res) => {
 
 // UPDATE a task
 // localhost:4001/tasks/3
-tasks.put("/:id", authenticateToken, async (req, res) => {
+tasks.put("/:id", async (req, res) => {
     try {
         const { id } = req.params
         const updatedTask = await updateTask(id, req.body)
@@ -61,7 +61,7 @@ tasks.put("/:id", authenticateToken, async (req, res) => {
 
 // Delete a task
 // localhost:4001/tasks/3
-tasks.delete('/:id', authenticateToken, async (req, res) => {
+tasks.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const deletedTask = await deleteTask(id)

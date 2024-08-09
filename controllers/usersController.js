@@ -5,9 +5,12 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 // Secret string from .env used when function to create a token is called
 const secret = process.env.SECRET;
+
+
 const { getUsers, createUser, logInUser } = require('../queries/users');
 const tasksController = require(`./tasksController`);
-users.use(`/:user_id/tasks`, tasksController);
+const authenticateToken = require(`../auth/auth.js`);
+users.use(`/:user_id/tasks`, authenticateTokenm, tasksController);
 
 
 users.get('/', async (req, res) => {
