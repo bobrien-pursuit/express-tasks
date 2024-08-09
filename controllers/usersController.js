@@ -1,15 +1,20 @@
-const express = require('express')
-const users = express.Router()
-require('dotenv').config()
-// Package to generate tokens to authenticate users when sending requests
-const jwt = require('jsonwebtoken')
-// Secret string from .env used when function to create a token is called
+// intances
+const express = require('express');
+const users = express.Router();
+const jwt = require('jsonwebtoken');
+
+// environment config
+require('dotenv').config();
+
+// environment variables
 const secret = process.env.SECRET;
 
-
+// function calls
 const { getUsers, createUser, logInUser } = require('../queries/users');
 const tasksController = require(`./tasksController`);
 const { authenticateToken } = require(`../auth/auth.js`);
+
+
 users.use(`/:user_id/tasks`, authenticateToken, tasksController);
 
 
