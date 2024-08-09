@@ -9,8 +9,8 @@ const secret = process.env.SECRET;
 
 const { getUsers, createUser, logInUser } = require('../queries/users');
 const tasksController = require(`./tasksController`);
-const authenticateToken = require(`../auth/auth.js`);
-users.use(`/:user_id/tasks`, authenticateTokenm, tasksController);
+const { authenticateToken } = require(`../auth/auth.js`);
+users.use(`/:user_id/tasks`, authenticateToken, tasksController);
 
 
 users.get('/', async (req, res) => {
