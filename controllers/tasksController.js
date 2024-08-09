@@ -20,7 +20,7 @@ tasks.get('/:id', async (req, res) => {
     try {
         const { id } = req.params
         const task = await getTask(id)
-        if(task.id){
+        if(task.task_id){
             res.status(200).json(task)
         } else {
             res.status(404).json({ error: "Task Not Found" })
