@@ -43,5 +43,6 @@ const logInUser = async (user) => {
         return error;
     }
 
+}
 
 module.exports = { createUser, getUsers, logInUser }

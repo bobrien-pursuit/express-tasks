@@ -34,26 +34,27 @@ users.post('/', async (req, res) => {
     }
 });
 
+// localhost:4001/users/login
 users.post('/login', async (req, res) => {
     try {
-        const user = await logInUser(req.body);
+        const user = await logInUser(req.body)
         if(!user){
             res.status(401).json({ error: "Invalid username or password" })
             return // Exit the function
         }
 
-        const token = jwt.sign({ userId: user.user_id, username: user.username }, secret);
+        const token = jwt.sign({ userId: user.user_id, username: user.username }, secret)
 
-        res.status(200).json({ 
-            user: {
-                user_id: user.user_id, 
-                username: user.username, 
-                email: user.email
-            }, 
-            token 
-        });
-    } catch (err) {
-        res.status(500).json({ error: "Internal server error" })
+        const loggedInUser = {
+            user_id: user.user_id,
+            username: user.username,
+            email: user.email
+        }
+
+        res.status(200).json({ user: loggedInUser, token })
+
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" })
     }
 })
 
