@@ -24,7 +24,7 @@ const getTask = async (id, userId) => {
 const createTask = async (task) => {
     try {
         const completed = task.completed || false
-        const newTask = await db.one("INSERT into tasks (title, description, completed, created_at, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *", [task.title, task.description, completed, new Date(), task.user_id]);
+        const newTask = await db.one("INSERT INTO tasks (title, description, completed, created_at, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *", [task.title, task.description, completed, new Date(), task.user_id]);
 
         return newTask;
     } catch (err) {

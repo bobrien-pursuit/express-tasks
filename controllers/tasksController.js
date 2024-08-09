@@ -37,7 +37,8 @@ tasks.get('/:id', authenticateToken, async (req, res) => {
 // localhost:4001/tasks/
 tasks.post('/', authenticateToken, checkTitle, async (req, res) => {
     try {
-        const newTask = await createTask(req.body)
+        const { user_id } = req.params;
+        const newTask = await createTask({...req.body, user_id:user_id })
         res.status(201).json(newTask)   
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" })
