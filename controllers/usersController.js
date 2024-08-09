@@ -9,12 +9,12 @@ require('dotenv').config();
 // environment variables
 const secret = process.env.SECRET;
 
-// function calls
+// imported functions
 const { getUsers, createUser, logInUser } = require('../queries/users');
 const tasksController = require(`./tasksController`);
 const { authenticateToken } = require(`../auth/auth.js`);
 
-
+// function calls
 users.use(`/:user_id/tasks`, authenticateToken, tasksController);
 
 
